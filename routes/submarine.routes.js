@@ -51,6 +51,7 @@ router.post("/", verifyToken, async (req, res) => {
     }
 
 })
+// route to update a submarine by ID
 router.put("/:id", verifyToken, async (req, res) => {
     if (req.user.role !== "admin" || req.user.role !== "vister") {
         return res.status(403).json({ message: "Forbidden: Only admins can update submarines" });
@@ -71,4 +72,45 @@ router.put("/:id", verifyToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+// route to delete a submarine by ID
+router.delete("/:id", verifyToken, async (req, res) => {
+    if (req.user.role !== "admin" || req.user.role !== "vister") {
+        return res.status(403).json({ message: "Forbidden: Only admins can delete submarines" });
+    }
+    try {
+        const deletedSubmarine = await Submarine.findByIdAndDelete(req.params.id);
+        if (deletedSubmarine) {
+            res.status(200).json({ message: "Submarine deleted successfully" });
+        } else {
+            res.status(404).json({ message: "Submarine not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// update a submarine status by ID
+router.put("/:id/:status", verifyToken, async (req, res) => {
+    try {
+        const user = req.user;
+        if (user.role !== "admin" && user.role !== "vister") {
+            return res.status(403).json({ message: "Forbidden: Only admins can update submarine status" });
+        }
+        const { id, status } = req.params;
+        const updatedSubmarine = await Submarine.findByIdAndUpdate(
+            id,
+            status,
+            { new: true }
+        );
+        if (updatedSubmarine) {
+            res.status(200).json({ submarine: updatedSubmarine, message: "Submarine status updated successfully" });
+        } else {
+            res.status(404).json({ message: "Submarine not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
