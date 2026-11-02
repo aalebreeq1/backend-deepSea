@@ -20,9 +20,9 @@ const submarineSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: [
-            "Operational",
-            "Under Maintenance",
-            "Retired"],
+            "operational",
+            "under_maintenance",
+            "retired"],
         required: true
     },
     description: {
