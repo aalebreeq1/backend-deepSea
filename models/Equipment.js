@@ -23,9 +23,9 @@ const equipmentSchema = new mongoose.Schema({
     condition: {
         type: String,
         enum: [
-            "Operational",
-            "Needs Maintenance",
-            "Out of Service"
+            "operational",
+            "needs_maintenance",
+            "out_of_service"
         ],
         required: true
     },

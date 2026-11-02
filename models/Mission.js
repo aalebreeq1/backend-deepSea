@@ -18,7 +18,7 @@ const missionSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["Planned", "Active", "Completed", "Suspended"],
+        enum: ["planned", "active", "completed", "suspended"],
         required: true
     },
     submarine: {
