@@ -33,4 +33,5 @@ const submarineSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Submarine", submarineSchema);
+const Submarine = mongoose.model("Submarine", submarineSchema);
+module.exports = Submarine;
