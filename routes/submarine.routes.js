@@ -91,13 +91,14 @@ router.delete("/:id", verifyToken, async (req, res) => {
 });
 
 // update a submarine status by ID
-router.put("/:id/:status", verifyToken, async (req, res) => {
+router.patch("/:id/status/", verifyToken, async (req, res) => {
     try {
         const user = req.user;
         if (user.role !== "admin" && user.role !== "vister") {
             return res.status(403).json({ message: "Forbidden: Only admins can update submarine status" });
         }
-        const { id, status } = req.params;
+        const {id} = req.params;
+        const { status } = req.body;
         const updatedSubmarine = await Submarine.findByIdAndUpdate(
             id,
             status,
