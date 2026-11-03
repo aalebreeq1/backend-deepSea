@@ -7,15 +7,19 @@ const jwt = require("jsonwebtoken");
 
 router.post("/sign-up", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, email, role, specialization, institution } = req.body;
 
     // Validation
-    if (!username || !password) return res.status(400).json({message: "Username and password are required.",});
+    if (!username || !password || !email) return res.status(400).json({message: "Username, password and email are required.",});
     if (password.length < 6) return res.status(400).json({message: "Password must be more than 6 characters",});
 
     const user = await User.create({
       username,
       hashedPassword: await bcrypt.hash(password, 12),
+      email,
+      role,
+      specialization,
+      institution,
     });
 
     const { _id, createdAt, updatedAt } = user;
@@ -66,7 +70,7 @@ router.post("/sign-in", async (req, res) => {
     }
 
     // Construct the payload
-    const payload = { username: user.username, _id: user._id };
+    const payload = { username: user.username, _id: user._id, role: user.role, email: user.email, specialization: user.specialization, institution: user.institution };
 
 
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -77,6 +81,10 @@ router.post("/sign-in", async (req, res) => {
       user: {
         _id: user._id,
         username: user.username,
+        role: user.role,
+        email: user.email,
+        specialization: user.specialization,
+        institution: user.institution,
       },
     });
   } catch (err) {
