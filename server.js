@@ -8,6 +8,8 @@ const cors = require('cors')
 
 // Routes Import
 const authRoutes = require('./routes/auth.routes')
+const submarineRoutes = require('./routes/submarine.routes')
+const missionRoutes = require('./routes/mission.routes')
 
 
 
@@ -24,6 +26,9 @@ app.use(morgan('dev'))
 
 // Routes
 app.use('/auth',authRoutes)
+app.use('/submarine', submarineRoutes)
+app.use('/mission', missionRoutes)
+
 
 
 // connect to database and listen on Port 3000
