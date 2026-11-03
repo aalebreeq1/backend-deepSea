@@ -1,6 +1,6 @@
-const Mission = require('../models/mission.model');
+const Mission = require('../models/Mission');
 const router = require('express').Router();
-const { verifyToken } = require("../middleware/verifyToken");
+const  verifyToken  = require("../middleware/verifyToken");
 
 // route for reteriving all missions
 
