@@ -1,5 +1,6 @@
 const Mission = require('../models/mission.model');
 const router = require('express').Router();
+const { verifyToken } = require("../middleware/verifyToken");
 
 // route for reteriving all missions
 
@@ -17,8 +18,12 @@ router.get("/", async (req, res) => {
 })
 
 // route for creating a new mission
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
     try {
+        const user = req.user;
+        if (user.role !== "admin" && user.role !== "visitor") {
+            return res.status(403).json({ message: "Forbidden: Only admins and visitors can create missions" });
+        }
         const { title, objective, startDate, endDate, submarine, location, missionResearchers, equipment } = req.body;
         const newMission = await Mission.create({ title, objective, startDate, status: 'planned', endDate, submarine, location, missionResearchers, equipment });
         res.status(201).json({ mission: newMission });
@@ -43,8 +48,12 @@ router.get("/:id", async (req, res) => {
     }
 });
 // route for updating a mission by ID
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
     try {
+        const user = req.user;
+        if (user.role !== "admin" && user.role !== "visitor") {
+            return res.status(403).json({ message: "Forbidden: Only admins and visitors can update missions" });
+        }
         const { title, objective, startDate, endDate, submarine, location, missionResearchers, equipment } = req.body;
         const updatedMission = await Mission.findByIdAndUpdate(
             req.params.id,
@@ -61,8 +70,12 @@ router.put("/:id", async (req, res) => {
     }
 });
 // route for deleting a mission by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
     try {
+        const user = req.user;
+        if (user.role !== "admin" && user.role !== "visitor") {
+            return res.status(403).json({ message: "Forbidden: Only admins and visitors can delete missions" });
+        }
         const deletedMission = await Mission.findByIdAndDelete(req.params.id);
         if (!deletedMission) {
             return res.status(404).json({ message: "Mission not found" });
@@ -70,6 +83,28 @@ router.delete("/:id", async (req, res) => {
         res.status(200).json({ message: "Mission deleted successfully" });
     }
     catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+router.patch("/:id/status/", verifyToken, async (req, res) => {
+    try {
+        const user = req.user;
+        if (user.role !== "admin" && user.role !== "visitor") {
+            return res.status(403).json({ message: "Forbidden: Only admins and visitors can update mission status" });
+        }
+        const { id } = req.params;
+        const { status } = req.body;
+        const updatedMission = await Mission.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true }
+        );
+        if (updatedMission) {
+            res.status(200).json({ mission: updatedMission, message: "Mission status updated successfully" });
+        } else {
+            res.status(404).json({ message: "Mission not found" });
+        }
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
