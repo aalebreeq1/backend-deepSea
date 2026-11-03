@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Submarine = require("../models/Submarine");
 const router = require("express").Router();
-const { verifyToken } = require("../middleware/verifyToken");
+const verifyToken  = require("../middleware/verifyToken");
 
 // route to get all submarines
 router.get("/", async (req, res) => {
