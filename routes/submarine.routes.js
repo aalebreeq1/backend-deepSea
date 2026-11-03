@@ -75,7 +75,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 
 // route to delete a submarine by ID
 router.delete("/:id", verifyToken, async (req, res) => {
-    if (req.user.role !== "admin" || req.user.role !== "visitor") {
+    if (req.user.role !== "admin" && req.user.role !== "visitor") {
         return res.status(403).json({ message: "Forbidden: Only admins and visitors can delete submarines" });
     }
     try {
