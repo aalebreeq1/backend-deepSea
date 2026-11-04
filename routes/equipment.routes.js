@@ -32,4 +32,21 @@ router.get('/:id', verifyToken, async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 })
+
+router.put('/:id', verifyToken, async (req, res) => {
+    try {
+        const updatedEquipment = await Equipment.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!updatedEquipment) {
+            return res.status(404).json({ message: "Equipment not found" });
+        }
+        res.status(200).json(updatedEquipment)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
+
 module.exports = router;
