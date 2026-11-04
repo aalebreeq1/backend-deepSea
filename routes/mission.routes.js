@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
         }
         res.status(200).json({ missions: allMissions });
     }
-    catch (err) {
+    catch (err) { 
         res.status(500).json({ error: err.message });
     }
 })

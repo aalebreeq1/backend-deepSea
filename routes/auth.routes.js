@@ -17,7 +17,6 @@ router.post("/sign-up", async (req, res) => {
       username,
       hashedPassword: await bcrypt.hash(password, 12),
       email,
-      role,
       specialization,
       institution,
     });
