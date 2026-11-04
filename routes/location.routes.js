@@ -34,4 +34,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const updatedLocation = await Location.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedLocation) {
+      return res.status(404).json({ message: "Location not found" });
+    }
+
+    res.status(200).json(updatedLocation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
