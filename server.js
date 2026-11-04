@@ -10,6 +10,9 @@ const cors = require('cors')
 const authRoutes = require('./routes/auth.routes')
 const submarineRoutes = require('./routes/submarine.routes')
 const missionRoutes = require('./routes/mission.routes')
+const locationRoutes = require('./routes/location.routes.js')
+const userRoutes = require('./routes/user.routes.js')
+const equipmentRoutes = require('./routes/equipment.routes.js')
 
 
 
@@ -28,6 +31,9 @@ app.use(morgan('dev'))
 app.use('/auth',authRoutes)
 app.use('/submarine', submarineRoutes)
 app.use('/mission', missionRoutes)
+app.use('/location', locationRoutes)
+app.use('/user', userRoutes)
+app.use('/equipment', equipmentRoutes)
 
 
 
