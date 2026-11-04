@@ -21,4 +21,15 @@ router.post('/', verifyToken, async (req, res) => {
     }
 })
 
+router.get('/:id', verifyToken, async (req, res) => {
+    try {
+        const oneEquipment = await Equipment.findById(req.params.id);
+        if (!oneEquipment) {
+            return res.status(404).json({ message: "Equipment not found" });
+        }
+        res.status(200).json(oneEquipment)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
 module.exports = router;
