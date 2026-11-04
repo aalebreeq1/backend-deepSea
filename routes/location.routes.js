@@ -20,4 +20,18 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const oneLocation = await Location.findById(req.params.id);
+
+    if (!oneLocation) {
+      return res.status(404).json({ message: "Location not found" });
+    }
+
+    res.status(200).json(oneLocation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
