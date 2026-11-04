@@ -49,4 +49,18 @@ router.put('/:id', verifyToken, async (req, res) => {
     }
 })
 
+router.delete("/:id", verifyToken, async (req, res) => {
+    try {
+        const deletedEquipment = await Equipment.findByIdAndDelete(req.params.id);
+
+        if (!deletedEquipment) {
+            return res.status(404).json({ message: "Equipment not found" });
+        }
+
+        res.status(200).json({ message: "Equipment deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
