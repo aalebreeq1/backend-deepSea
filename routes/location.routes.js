@@ -11,6 +11,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-
+router.post("/", verifyToken, async (req, res) => {
+  try {
+    const createNewLocation = await Location.create(req.body);
+    res.status(201).json(createNewLocation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
