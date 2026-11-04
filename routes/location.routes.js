@@ -52,4 +52,17 @@ router.put("/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const deletedLocation = await Location.findByIdAndDelete(req.params.id);
+
+    if (!deletedLocation) {
+      return res.status(404).json({ message: "Location not found" });
+    }
+
+    res.status(200).json({ message: "Location deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;
