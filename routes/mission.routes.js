@@ -1,18 +1,22 @@
 const Mission = require('../models/Mission');
 const router = require('express').Router();
-const  verifyToken  = require("../middleware/verifyToken");
+const verifyToken = require("../middleware/verifyToken");
 
 // route for reteriving all missions
 
 router.get("/", async (req, res) => {
     try {
-        const allMissions = await Mission.find();
+        const allMissions = await Mission.find()
+            .populate('submarine')
+            .populate('location')
+            .populate('missionResearchers')
+            .populate('equipment');
         if (allMissions.length === 0) {
             return res.status(404).json({ message: "No missions found" });
         }
         res.status(200).json({ missions: allMissions });
     }
-    catch (err) { 
+    catch (err) {
         res.status(500).json({ error: err.message });
     }
 })
@@ -37,7 +41,11 @@ router.post("/", verifyToken, async (req, res) => {
 // route for retrieving a single mission by ID
 router.get("/:id", async (req, res) => {
     try {
-        const mission = await Mission.findById(req.params.id);
+        const mission = await Mission.findById(req.params.id)
+            .populate('submarine')
+            .populate('location')
+            .populate('missionResearchers')
+            .populate('equipment');
         if (!mission) {
             return res.status(404).json({ message: "Mission not found" });
         }
