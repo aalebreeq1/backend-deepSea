@@ -59,8 +59,8 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", verifyToken, async (req, res) => {
     try {
         const user = req.user;
-        if (user.role !== "admin" && user.role !== "visitor") {
-            return res.status(403).json({ message: "Forbidden: Only admins and visitors can update missions" });
+        if (user.role !== "admin" && user.role !== "researcher") {
+            return res.status(403).json({ message: "Forbidden: Only admins and researchers can update missions" });
         }
         const { title, objective, startDate, endDate, submarine, location, missionResearchers, equipment } = req.body;
         const updatedMission = await Mission.findByIdAndUpdate(
@@ -97,8 +97,8 @@ router.delete("/:id", verifyToken, async (req, res) => {
 router.patch("/:id/status/", verifyToken, async (req, res) => {
     try {
         const user = req.user;
-        if (user.role !== "admin" && user.role !== "visitor") {
-            return res.status(403).json({ message: "Forbidden: Only admins and visitors can update mission status" });
+        if (user.role !== "admin") {
+            return res.status(403).json({ message: "Forbidden: Only admins can update mission status" });
         }
         const { id } = req.params;
         const { status } = req.body;
