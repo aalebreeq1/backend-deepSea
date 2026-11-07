@@ -116,6 +116,28 @@ router.patch("/:id/status/", verifyToken, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
+router.patch("/:id/researchers" , verifyToken, async (req,res) =>{
+    try{
+        const user = req.user;
+        if (user.role !== "admin" && user.role !== "researcher") {
+            return res.status(403).json({ message: "Forbidden: Only admins and researchers can update mission researchers" });
+        }
+        const { id } = req.params;
+        const { missionResearchers } = req.body;
+        const updatedMission = await Mission.findByIdAndUpdate(
+            id,
+            { missionResearchers },
+            { new: true }
+        );
+        if (updatedMission) {
+            res.status(200).json({ mission: updatedMission, message: "Mission researchers updated successfully" });
+        } else {
+            res.status(404).json({ message: "Mission not found" });
+        }
+    }
+    catch(err){
+        res.status(500).json({ error: err.message });
+    }
+})
 
 module.exports = router;
