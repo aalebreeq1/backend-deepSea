@@ -13,6 +13,8 @@ const missionRoutes = require('./routes/mission.routes')
 const locationRoutes = require('./routes/location.routes.js')
 const userRoutes = require('./routes/user.routes.js')
 const equipmentRoutes = require('./routes/equipment.routes.js')
+const discoveryRoutes = require('./routes/discoveryRoutes.js')
+const speciesRoutes = require ('./routes/speciesRoutes.js')
 
 
 
@@ -34,6 +36,8 @@ app.use('/mission', missionRoutes)
 app.use('/location', locationRoutes)
 app.use('/user', userRoutes)
 app.use('/equipment', equipmentRoutes)
+app.use('/discovery',discoveryRoutes)
+app.use('/species',speciesRoutes)
 
 
 
