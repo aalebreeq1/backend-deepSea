@@ -15,6 +15,7 @@ const userRoutes = require('./routes/user.routes.js')
 const equipmentRoutes = require('./routes/equipment.routes.js')
 const discoveryRoutes = require('./routes/discoveryRoutes.js')
 const speciesRoutes = require ('./routes/speciesRoutes.js')
+const uploadRoutes = require("./routes/upload.routes");
 
 
 
@@ -38,6 +39,7 @@ app.use('/user', userRoutes)
 app.use('/equipment', equipmentRoutes)
 app.use('/discovery',discoveryRoutes)
 app.use('/species',speciesRoutes)
+app.use("/uploads", uploadRoutes);
 
 
 
