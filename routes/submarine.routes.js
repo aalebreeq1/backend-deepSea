@@ -53,8 +53,8 @@ router.post("/", verifyToken, async (req, res) => {
 })
 // route to update a submarine by ID
 router.put("/:id", verifyToken, async (req, res) => {
-    if (req.user.role !== "admin" && req.user.role !== "visitor") {
-        return res.status(403).json({ message: "Forbidden: Only admins and visitors can update submarines" });
+    if (req.user.role !== "admin" && req.user.role !== "researcher") {
+        return res.status(403).json({ message: "Forbidden: Only admins and researchers can update submarines" });
     }
     try {
         const { name, model, maxDepth, capacity, description, image } = req.body;
@@ -94,8 +94,8 @@ router.delete("/:id", verifyToken, async (req, res) => {
 router.patch("/:id/status/", verifyToken, async (req, res) => {
     try {
         const user = req.user;
-        if (user.role !== "admin" && user.role !== "visitor") {
-            return res.status(403).json({ message: "Forbidden: Only admins and visitors can update submarine status" });
+        if (user.role !== "admin" && user.role !== "researcher") {
+            return res.status(403).json({ message: "Forbidden: Only admins and researchers can update submarine status" });
         }
         const {id} = req.params;
         const { status } = req.body;
