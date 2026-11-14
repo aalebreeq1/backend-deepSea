@@ -39,8 +39,8 @@ router.get("/:id", async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
     try {
         const user = req.user;
-        if (user.role !== "admin" && user.role !== "visitor") {
-            return res.status(403).json({ message: "Forbidden: Only admins and visitors can create submarines" });
+        if (user.role !== "admin" && user.role !== "researcher") {
+            return res.status(403).json({ message: "Forbidden: Only admins and researchers can create submarines" });
         }
         const { name, model, maxDepth, capacity, description, image } = req.body;
         const newSubmarine = await Submarine.create({ name, model, maxDepth, capacity, status: "operational", description, image });
@@ -75,8 +75,8 @@ router.put("/:id", verifyToken, async (req, res) => {
 
 // route to delete a submarine by ID
 router.delete("/:id", verifyToken, async (req, res) => {
-    if (req.user.role !== "admin" && req.user.role !== "visitor") {
-        return res.status(403).json({ message: "Forbidden: Only admins and visitors can delete submarines" });
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ message: "Forbidden: Only admins can delete submarines" });
     }
     try {
         const deletedSubmarine = await Submarine.findByIdAndDelete(req.params.id);
