@@ -25,8 +25,8 @@ router.get("/", async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
     try {
         const user = req.user;
-        if (user.role !== "admin" && user.role !== "visitor") {
-            return res.status(403).json({ message: "Forbidden: Only admins and visitors can create missions" });
+        if (user.role !== "admin" && user.role !== "researcher") {
+            return res.status(403).json({ message: "Forbidden: Only admins and researchers can create missions" });
         }
         const { title, objective, startDate, endDate, submarine, location, missionResearchers, equipment } = req.body;
         const newMission = await Mission.create({ title, objective, startDate, status: 'planned', endDate, submarine, location, missionResearchers, equipment });
@@ -81,8 +81,8 @@ router.put("/:id", verifyToken, async (req, res) => {
 router.delete("/:id", verifyToken, async (req, res) => {
     try {
         const user = req.user;
-        if (user.role !== "admin" && user.role !== "visitor") {
-            return res.status(403).json({ message: "Forbidden: Only admins and visitors can delete missions" });
+        if (user.role !== "admin") {
+            return res.status(403).json({ message: "Forbidden: Only admins can delete missions" });
         }
         const deletedMission = await Mission.findByIdAndDelete(req.params.id);
         if (!deletedMission) {

@@ -3,7 +3,17 @@ const cloudinary = require("../config/cloudinary");
 const verifyToken = require("../middleware/verifyToken");
 const uploadImage = require("../middleware/uploadImage");
 
-router.post("/image", verifyToken, uploadImage, async (req, res) => {
+function canUploadImage(req, res, next) {
+  if (req.user.role !== "admin" && req.user.role !== "researcher") {
+    return res.status(403).json({
+      message: "Forbidden: Only admins and researchers can upload images",
+    });
+  }
+
+  next();
+}
+
+router.post("/image", verifyToken, canUploadImage, uploadImage, async (req, res) => {
   if (!req.file) {
     return res.status(400).json({
       message: "Please select an image.",
