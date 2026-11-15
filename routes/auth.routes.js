@@ -7,16 +7,20 @@ const jwt = require("jsonwebtoken");
 
 router.post("/sign-up", async (req, res) => {
   try {
-    const { username, password, email, role, specialization, institution } = req.body;
+    const { username, password, email, role = "visitor", specialization, institution } = req.body;
 
     // Validation
     if (!username || !password || !email) return res.status(400).json({message: "Username, password and email are required.",});
     if (password.length < 6) return res.status(400).json({message: "Password must be more than 6 characters",});
+    if (role !== "visitor" && role !== "researcher") {
+      return res.status(400).json({ message: "Choose either visitor or researcher." });
+    }
 
     const user = await User.create({
       username,
       hashedPassword: await bcrypt.hash(password, 12),
       email,
+      role,
       specialization,
       institution,
     });
