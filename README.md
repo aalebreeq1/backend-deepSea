@@ -8,8 +8,8 @@ The frontend uses this API to retrieve records, submit forms, manage mission par
 
 ## Related Links
 
-- **Backend API:** Deployment URL not provided in the project files.
-- **Frontend Application:** Deployment URL not provided in the project files.
+- **Backend API:** [deployed backend](https://backend-deepsea.onrender.com/).
+- **Frontend Application:** 
 - **Frontend Repository:** [frontend-deepSea](https://github.com/aalebreeq1/frontend-deepSea)
 - **Backend Repository:** [backend-deepSea](https://github.com/aalebreeq1/backend-deepSea)
 
