@@ -19,6 +19,9 @@ const locationSchema = new mongoose.Schema({
     },
     depth: {
         type: Number
+    },
+    image: {
+        type: String
     }
 });
 

@@ -43,6 +43,8 @@ router.post("/image", verifyToken, canUploadImage, uploadImage, async (req, res)
       publicId: result.public_id,
     });
   } catch (error) {
+    console.error("CLOUDINARY UPLOAD ERROR:", error);
+
     const invalidImage = error.http_code === 400;
 
     return res.status(invalidImage ? 400 : 502).json({
